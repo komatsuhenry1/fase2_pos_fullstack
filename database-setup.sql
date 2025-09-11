@@ -1,7 +1,7 @@
--- Script para criar a tabela users no Supabase
--- Execute este script no SQL Editor do seu projeto Supabase
+-- Arquivo: src/database/schema.sql
+-- Este arquivo define a estrutura do banco de dados.
 
--- Criar a tabela users
+-- Cria a tabela de usuários
 CREATE TABLE IF NOT EXISTS users (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -11,29 +11,16 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Criar índices para melhor performance
+-- Cria a tabela de posts, com relacionamento para a tabela de usuários
+CREATE TABLE IF NOT EXISTS posts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    author VARCHAR(255) NOT NULL,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE -- Adicionado ON DELETE CASCADE para apagar posts se o usuário for deletado
+    -- A vírgula extra foi removida daqui
+);
+
+-- Criar índices para melhor performance em buscas
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
-
--- Habilitar Row Level Security (RLS) se necessário
--- ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-
--- Criar políticas RLS básicas (descomente se quiser usar RLS)
--- CREATE POLICY "Users can view their own data" ON users
---     FOR SELECT USING (auth.uid()::text = id::text);
-
--- CREATE POLICY "Users can update their own data" ON users
---     FOR UPDATE USING (auth.uid()::text = id::text);
-
--- CREATE POLICY "Users can insert their own data" ON users
---     FOR INSERT WITH CHECK (auth.uid()::text = id::text);
-
--- Inserir alguns dados de exemplo (opcional)
-INSERT INTO users (name, email, age) VALUES 
-    ('João Silva', 'joao@example.com', 25),
-    ('Maria Santos', 'maria@example.com', 30),
-    ('Pedro Costa', 'pedro@example.com', 28)
-ON CONFLICT (email) DO NOTHING;
-
--- Verificar se a tabela foi criada
-SELECT * FROM users LIMIT 5;
+CREATE INDEX IF NOT EXISTS idx_posts_user_id ON posts(user_id);

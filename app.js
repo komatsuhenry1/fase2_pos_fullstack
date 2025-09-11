@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');// trabalhar com arquivos / impotar
-const userRoutes = require('./src/routes/userRoutes'); 
+const postRoutes = require('./src/routes/postRoutes'); 
 const postgres = require('postgres');
 require('dotenv').config();
 
@@ -19,7 +19,14 @@ const sql = postgres(connectionString)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/user', userRoutes)
+// Middleware de debug temporário
+app.use((req, res, next) => {
+  console.log('Request body:', req.body);
+  console.log('Content-Type:', req.get('Content-Type'));
+  next();
+});
+
+app.use('/posts', postRoutes)
 
 app.use((err, req, res, next) => { // captura qualquer erro do app
     console.error(err.stack); // retorna o stacktrace
