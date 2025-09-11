@@ -1,5 +1,7 @@
 const { PostModel } = require('../model/postModel');
 
+//ADMIN ROUTES 
+
 const createPost = async (req, res) => {
     try {
       if (!req.body) {
@@ -7,6 +9,10 @@ const createPost = async (req, res) => {
       }
   
       const { title, content , author} = req.body;
+      // mesma coisa de 
+      // const title = req.body.title; 
+      // const content = req.body.content;
+      // const author = req.body.author; 
       
       if (!title || !content || !author) {
         return res.status(400).json({ 
@@ -15,16 +21,44 @@ const createPost = async (req, res) => {
       }
   
       const user = await PostModel.create({ title, content , author});
-      res.status(201).json(user);
+      res.status(201).json(user); // .sjon converte para json envia como resposta
     } catch (error) {
       console.error('Error creating post:', error);
       res.status(500).json({ error: error.message });
     }
   };
 
+  const getAllPosts = async (req, res) => {
+    try {
+      const posts = await PostModel.getAllPosts();
+      res.json(posts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const updatePost = async (req, res) => {
+    try {
+      const updatedPost = await PostModel.updatePost(req.params.id, req.body);
+      res.json(updatedPost);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const deletePost = async (req, res) => {
+    try {
+      const deletedPost = await PostModel.deletePost(req.params.id);
+      res.json(deletedPost);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
 module.exports = {
   createPost,
+  getAllPosts,
+  updatePost,
+  deletePost
 };
-
-
-
