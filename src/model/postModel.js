@@ -38,6 +38,25 @@ const PostModel = {
       .select();
     if (error) throw error;
     return deletedPost[0];
+  },
+
+  async getPostById(id) {
+    const { data: postById, error } = await supabase
+      .from(TABLE)
+      .select()
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return postById;
+  },
+
+  async getPostByString(string){
+    const { data: postByString, error } = await supabase
+      .from(TABLE)
+      .select()
+      .or(`title.ilike.%${string}%,content.ilike.%${string}%,author.ilike.%${string}%`); //ilike -> "insensitive like" (ignora maiúsculas/minúsculas)
+    if (error) throw error;
+    return postByString;
   }
 
 };
