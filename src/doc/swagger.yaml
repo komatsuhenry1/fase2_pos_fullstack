@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  title: API de Posts
+  version: 1.0.0
+  description: Documentação da API para o CRUD de Posts
+servers:
+  - url: http://localhost:3000
+
+# --- INÍCIO DA MUDANÇA ---
+# Seção de componentes para definir modelos e parâmetros reutilizáveis
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: O ID único do post.
+          example: "0a41258d-63fe-41f8-ac30-fe978aef04c8"
+        title:
+          type: string
+          description: O título do post.
+          example: "Titulo do post"
+        content:
+          type: string
+          description: O conteúdo do post.
+          example: "Post content"
+        author:
+          type: string
+          description: O autor do post.
+          example: "Henry K"
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: O título do post.
+          example: "Titulo do post"
+        content:
+          type: string
+          description: O conteúdo do post.
+          example: "Post content"
+        author:
+          type: string
+          description: O autor do post.
+          example: "Henry K"
+  parameters:
+    roleHeader:
+      name: role
+      in: header
+      description: Perfil do usuário para autorização ('admin' ou 'user')
+      required: true
+      schema:
+        type: string
+
+paths:
+  /posts:
+    get:
+      summary: Retorna uma lista de todos os posts
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+      responses:
+        '200':
+          description: Uma lista de todos os posts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+              example:
+                - id: "af1da7ef-2f82-4612-abd0-27b6b3bcf82b"
+                  title: "Titulo do post"
+                  content: "Post content"
+                  author: "Henry K"
+                - id: "340b9864-5641-47ed-8f5f-68c337a80ee4"
+                  title: "Titulo do post2"
+                  content: "ANGELA"
+                  author: "Henry K2"
+    post:
+      summary: Cria um novo post
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+            example:
+              title: "Titulo do post2"
+              content: "ANGELA"
+              author: "Henry K2"
+      responses:
+        '201':
+          description: Post criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+              example:
+                id: "0a41258d-63fe-41f8-ac30-fe978aef04c8"
+                title: "Titulo do post2"
+                content: "ANGELA"
+                author: "Henry K2"
+
+  /posts/search/{string}:
+    get:
+      summary: Busca posts por uma string
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+        - name: string
+          in: path
+          required: true
+          description: A string para buscar nos posts
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de posts encontrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+              example:
+                - id: "340b9864-5641-47ed-8f5f-68c337a80ee4"
+                  title: "Titulo do post2"
+                  content: "ANGELA"
+                  author: "Henry K2"
+
+  /posts/{id}:
+    get:
+      summary: Retorna um post específico pelo seu ID
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+        - name: id
+          in: path
+          required: true
+          description: ID do post a ser buscado.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes do post solicitado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+              example:
+                id: "af1da7ef-2f82-4612-abd0-27b6b3bcf82b"
+                title: "Titulo do post"
+                content: "Post content"
+                author: "Henry K"
+    put:
+      summary: Atualiza um post existente
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+        - name: id
+          in: path
+          required: true
+          description: ID do post a ser atualizado.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+            example:
+              title: "updated title"
+              content: "updated content"
+              author: "updates author"
+      responses:
+        '200':
+          description: Post atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+              example:
+                id: "0a41258d-63fe-41f8-ac30-fe978aef04c8"
+                title: "updated title"
+                content: "updated content"
+                author: "updates author"
+    delete:
+      summary: Deleta um post
+      tags: [Posts]
+      parameters:
+        - $ref: '#/components/parameters/roleHeader'
+        - name: id
+          in: path
+          required: true
+          description: ID do post a ser deletado.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Post deletado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+              example:
+                id: "0a41258d-63fe-41f8-ac30-fe978aef04c8"
+                title: "updated title"
+                content: "updated content"
+                author: "updates author"
+
+# --- FIM DA MUDANÇA ---

@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');// trabalhar com arquivos / impotar
 const postRoutes = require('./src/routes/postRoutes'); 
 const postgres = require('postgres');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+
 require('dotenv').config();
 
 const app = express();
@@ -11,16 +14,30 @@ const PORT = process.env.PORT || 3000;
 const connectionString = process.env.DATABASE_URL
 const sql = postgres(connectionString)
 
-// Middlewares para parsing de dados
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware de debug temporário
-app.use((req, res, next) => {
-  console.log('Request body:', req.body);
-  console.log('Content-Type:', req.get('Content-Type'));
-  next();
-});
+const options = {
+  definition: {
+    openapi: '3.0.0', // OpenAPI que estamos usando
+    info: {
+      title: 'API de Posts', // define title
+      version: '1.0.0',
+      description: 'Documentação da API para o CRUD de Posts',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+  },
+  apis: ['./src/doc/swagger.yaml'], // <-- Olhando para o nosso novo arquivo YAML
+};
+
+const specs = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 
 app.use('/posts', postRoutes)
 
