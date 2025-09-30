@@ -5,7 +5,7 @@ const postgres = require('postgres');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
-require('dotenv').config();
+// require('dotenv').config(); // remover linha para rodar no docker
 
 const app = express();
 
