@@ -35,3 +35,12 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  deploy:
+    needs: build-and-test    
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+
