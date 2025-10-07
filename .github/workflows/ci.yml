@@ -1,0 +1,37 @@
+name: Node.js CI
+
+# define os eventos de disparo do workflow
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # baixa o codigo para a maquina ubuntu
+      #  uses define que é uma action do github
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # configura o ambiente node para a vm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # installa as dependencias
+      - name: Install dependencies
+        run: npm install
+
+      # rodas os testes
+      - name: Run tests
+        run: npm test
+        env:
+            # pega as secrets do github
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

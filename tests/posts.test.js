@@ -15,7 +15,6 @@ describe('Posts API', () => {
         await PostModel.deleteAll();
     });
 
-    // --- Testes para POST /posts ---
     describe('POST /posts', () => {
         it('deve criar um novo post com dados válidos', async () => {
             const newPostData = {
@@ -76,7 +75,6 @@ describe('Posts API', () => {
         });
     });
 
-    // --- Testes para GET /posts/search/:string ---
     describe('GET /posts/search/:string', () => {
         it('deve retornar posts que correspondem ao termo de busca', async () => {
             await PostModel.create({ title: 'post string query', content: 'teste', author: 'teste' });
@@ -90,7 +88,6 @@ describe('Posts API', () => {
         });
     });
 
-    // --- Testes para PUT /posts/:id ---
     describe('PUT /posts/:id', () => {
         it('deve atualizar um post existente', async () => {
             const originalPost = await PostModel.create({ title: 'old title', content: 'old content', author: 'old authro' });
