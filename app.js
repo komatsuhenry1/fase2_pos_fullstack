@@ -46,8 +46,4 @@ app.use((err, req, res, next) => { // captura qualquer erro do app
     res.status(500).send('Something broke!');
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-module.exports = sql;
+module.exports = app;
