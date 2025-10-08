@@ -15,7 +15,7 @@ describe('Posts API', () => {
         await PostModel.deleteAll();
     });
 
-    //comentário pra commit!!
+    //comentario para teste de push
 
     describe('POST /posts', () => {
         it('deve criar um novo post com dados válidos', async () => {
