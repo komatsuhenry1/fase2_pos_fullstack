@@ -15,6 +15,4 @@ router.get('/', authUserAndAdmin, postController.getAllPosts);
 router.get('/search/:string', authUserAndAdmin, postController.getPostByString);
 router.get('/:id', authUserAndAdmin, postController.getPostById);
 
-
-
 module.exports = router;

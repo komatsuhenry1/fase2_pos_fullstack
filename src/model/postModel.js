@@ -127,16 +127,26 @@ const PostModel = {
   },
 
   async create(data) {
+    const now = new Date().toISOString();
+
+    const postData = {
+      ...data,
+      status: data.status || 'Published',
+      created_at: now,
+      updated_at: now
+    };
+
     const { data: newPost, error } = await supabase
       .from(TABLE)
-      .insert([data])
+      .insert([postData])
       .select();
+
     if (error) throw error;
     return newPost[0];
   },
 
   async getAllPosts() { // async func
-    const { data: posts, error } = await supabase 
+    const { data: posts, error } = await supabase
       .from(TABLE) // conecta a tabela posts
       .select(); // busca todos os campos
     if (error) throw error;
@@ -144,16 +154,22 @@ const PostModel = {
   },
 
   async updatePost(id, data) {
+    const updatePayload = {
+      ...data,
+      updated_at: new Date().toISOString()
+    };
+
     const { data: updatedPost, error } = await supabase
       .from(TABLE)
-      .update(data)
+      .update(updatePayload)
       .eq('id', id)
       .select();
+
     if (error) throw error;
     return updatedPost[0];
   },
 
-  async deletePost(id) { 
+  async deletePost(id) {
     const { data: deletedPost, error } = await supabase
       .from(TABLE)
       .delete()
@@ -173,7 +189,7 @@ const PostModel = {
     return postById;
   },
 
-  async getPostByString(string){
+  async getPostByString(string) {
     const { data: postByString, error } = await supabase
       .from(TABLE)
       .select()
