@@ -40,7 +40,7 @@ const getAllPosts = async (req, res) => {
 const updatePost = async (req, res) => {
   try {
     const updatedPost = await PostModel.updatePost(req.params.id, req.body);
-    
+
     if (!updatedPost) {
       return res.status(404).json({ error: 'Post not found to update' });
     }
