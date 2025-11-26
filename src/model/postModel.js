@@ -180,13 +180,22 @@ const PostModel = {
   },
 
   async getPostById(id) {
+    //retorna todos os comentários daquele post
     const { data: postById, error } = await supabase
       .from(TABLE)
       .select()
       .eq('id', id)
       .single();
     if (error) throw error;
-    return postById;
+
+    const { data: comments, error: errorComments } = await supabase
+      .from('comments')
+      .select()
+      .eq('post_id', id);
+
+    if (errorComments) throw errorComments;
+
+    return { ...postById, comments };
   },
 
   async getPostByString(string) {
@@ -206,7 +215,7 @@ const PostModel = {
       .select();
     if (error) throw error;
     return comment[0];
-  },  
+  },
 
 };
 
