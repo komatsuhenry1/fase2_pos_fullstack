@@ -94,15 +94,14 @@ const getPostByString = async (req, res) => {
 
 const postComment = async (req, res) => {
   const { id } = req.params;
-  const { user_id, name, comment } = req.body;
+  const { name, comment } = req.body;
 
   try {
-    if (!id || !user_id || !comment) {
-      return res.status(400).json({ error: "Missing required fields: Post ID (in URL), user_id or comment" });
+    if (!id || !name || !comment) {
+      return res.status(400).json({ error: "Missing required fields: Post ID (in URL), name or comment" });
     }
 
     const newComment = await CommentModel.createComment(id, {
-      user_id,
       name,
       comment
     });

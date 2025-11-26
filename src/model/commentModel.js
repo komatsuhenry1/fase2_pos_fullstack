@@ -12,7 +12,6 @@ const CommentModel = {
         const commentData = {
             id: comment_id,
             post_id: post_id,
-            user_id: data.user_id,
             name: data.name,
             comment: data.comment,
             created_at: now
