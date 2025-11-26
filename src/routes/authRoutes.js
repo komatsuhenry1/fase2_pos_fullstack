@@ -7,8 +7,8 @@ const cors = require('cors');
 router.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+    allowedHeaders: ['Content-Type', 'Authorization', 'role'],
+  }));
 
 router.post('/login', authController.loginUser);
 router.post('/register', authController.registerUser);
