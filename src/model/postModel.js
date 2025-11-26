@@ -196,7 +196,17 @@ const PostModel = {
       .or(`title.ilike.%${string}%,content.ilike.%${string}%,author.ilike.%${string}%`); //ilike -> "insensitive like" (ignora maiúsculas/minúsculas)
     if (error) throw error;
     return postByString;
-  }
+  },
+
+  async postComment(id, data) {
+    const { data: comment, error } = await supabase
+      .from(TABLE)
+      .update(data.comment)
+      .eq('id', id)
+      .select();
+    if (error) throw error;
+    return comment[0];
+  },  
 
 };
 

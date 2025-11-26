@@ -21,4 +21,6 @@ router.get('/', authUserAndAdmin, postController.getAllPosts);
 router.get('/search/:string', authUserAndAdmin, postController.getPostByString);
 router.get('/:id', authUserAndAdmin, postController.getPostById);
 
+router.patch('/comment/:id', authUserAndAdmin, postController.postComment);
+
 module.exports = router;

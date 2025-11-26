@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');// trabalhar com arquivos / impotar
 const postRoutes = require('./src/routes/postRoutes');
-const authRoutes = require('./src/routes/authRoutes');  
+const authRoutes = require('./src/routes/authRoutes');
 const postgres = require('postgres');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -39,9 +39,6 @@ const specs = swaggerJsdoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
 app.use('/posts', postRoutes)
 app.use('/auth', authRoutes)
@@ -49,6 +46,10 @@ app.use('/auth', authRoutes)
 app.use((err, req, res, next) => { // captura qualquer erro do app
   console.error(err.stack); // retorna o stacktrace
   res.status(500).send('Something broke!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 module.exports = app;
