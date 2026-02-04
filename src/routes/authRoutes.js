@@ -13,4 +13,6 @@ router.use(cors({
 router.post('/login', authController.loginUser);
 router.post('/register', authController.registerUser);
 
+
+
 module.exports = router;

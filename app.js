@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');// trabalhar com arquivos / impotar
 const postRoutes = require('./src/routes/postRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const userRoutes = require('./src/routes/userRoutes');
 const postgres = require('postgres');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -39,9 +40,9 @@ const specs = swaggerJsdoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-
 app.use('/posts', postRoutes)
 app.use('/auth', authRoutes)
+app.use('/user', userRoutes)
 
 app.use((err, req, res, next) => { // captura qualquer erro do app
   console.error(err.stack); // retorna o stacktrace

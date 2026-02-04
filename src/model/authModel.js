@@ -5,11 +5,11 @@ const TABLE = "users";
 
 const AuthModel = {
     //register user deve criar um id automaticamente
-    async registerUser(name, email, username, password, role) {
+    async registerUser(name, email, username, password, role, age) {
         id = uuidv4();
         const { data, error } = await supabase
             .from(TABLE)
-            .insert({ id, name, email, username, password, role })
+            .insert({ id, name, email, username, password, role, age })
             .select();
         if (error) throw error;
         return data[0];

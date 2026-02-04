@@ -6,8 +6,8 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ error: 'Request body is missing' });
         }
 
-        const { name, email, username, password, role } = req.body;
-        const user = await AuthModel.registerUser(name, email, username, password, role);
+        const { name, email, username, password, role, age } = req.body;
+        const user = await AuthModel.registerUser(name, email, username, password, role, age);
         res.json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
