@@ -3,6 +3,7 @@ const { CommentModel } = require('../model/commentModel');
 
 const createPost = async (req, res) => {
   try {
+    console.log(`chegou na controller`)
     const { title, content, author } = req.body;
 
     // Fail Fast: Validação inicial

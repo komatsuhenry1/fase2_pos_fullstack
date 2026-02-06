@@ -18,10 +18,10 @@ const UserModel = {
         if (error) throw error;
         return data;
     },
-    async updateUser(id, name, email, password, role,age) {
+    async updateUser(id, name, email, password, role, username, age) {
         const { data, error } = await supabase
         .from(TABLE)
-        .update({ name, email, password, role, age})
+        .update({ name, email, password, role, username, age })
         .eq('id', id);
         if (error) throw error;
         return data;

@@ -22,8 +22,8 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, password, role,age } = req.body;
-        const user = await UserModel.updateUser(id, name, email, password, role,age);
+        const { name, email, password, role, username, age } = req.body;
+        const user = await UserModel.updateUser(id, name, email, password, role, username, age);
         res.json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });

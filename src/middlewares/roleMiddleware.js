@@ -7,9 +7,10 @@ const authAdmin = (requiredRole) => {
       return res.status(401).json({ error: 'role não encontrada' });
     }
 
-    if (userRole === requiredRole) {
+    if (userRole != requiredRole) {
       next(); // next() permite e passa para a controller
     } else {
+      console.log(userRole)
       return res.status(403).json({ error: 'Rota exclusiva para administradores.' });
     }
   };

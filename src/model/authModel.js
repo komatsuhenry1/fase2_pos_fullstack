@@ -15,6 +15,7 @@ const AuthModel = {
         return data[0];
     },
     async loginUser(email, password) {
+        console.log(email, password);
         const { data, error } = await supabase
             .from(TABLE)
             .select()
